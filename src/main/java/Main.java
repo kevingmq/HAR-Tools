@@ -34,13 +34,13 @@ public class Main {
 
         for(int dataset_i = 0; dataset_i < p_datasets_mdu.length; dataset_i++) {
 
-            SubjectDependent(p_datasets_mdu[dataset_i], p_segmentLenght[dataset_i], p_sources[dataset_i]);
+          //  SubjectDependent(p_datasets_mdu[dataset_i], p_segmentLenght[dataset_i], p_sources[dataset_i]);
 
         }
 
         for(int dataset_i = 0; dataset_i < p_datasets_mdi.length; dataset_i++) {
 
-           // SubjectIndependent(p_datasets_mdi[dataset_i], p_segmentLenght[dataset_i], p_sources[dataset_i]);
+           SubjectIndependent(p_datasets_mdi[dataset_i], p_segmentLenght[dataset_i], p_sources[dataset_i]);
 
         }
 
