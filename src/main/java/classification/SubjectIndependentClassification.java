@@ -6,6 +6,10 @@ import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.evaluation.Prediction;
 import weka.classifiers.trees.RandomForest;
+import weka.classifiers.trees.J48;
+import weka.classifiers.bayes.BayesNet;
+import weka.classifiers.lazy.IBk;
+import weka.classifiers.functions.SMO;
 import weka.core.Instances;
 
 import java.io.BufferedReader;
@@ -18,21 +22,16 @@ public class SubjectIndependentClassification {
 
     public static void main(String args[]) {
 
-        String[] p_datasets_mdu = new String[]{
-                //"WISDM-MDU",
+        String[] p_datasets_mdi = new String[]{
+                "WISDM-MDI-X_FS1",
+                "WISDM-MDI-X_FS2",
+                "WISDM-MDI-X_FS3",
                 "UCI-MDI-OVER_FS1",
-                // "UniMiB-MDU",
-        };
-
-        String[] p_segmentLenght = new String[]{
-                //   "200",
-                "128",
-                //   "151",
-        };
-        String[] p_sources = new String[]{
-                //   "3",
-                "3",
-                //   "3",
+                "UCI-MDI-OVER_FS2",
+                "UCI-MDI-OVER_FS3",
+              "UniMiB-MDI_FS1",
+                "UniMiB-MDI_FS2",
+                "UniMiB-MDI_FS3",
         };
 
         args = new String[]{
@@ -41,10 +40,10 @@ public class SubjectIndependentClassification {
                 "-W", "weka.classifiers.trees.RandomForest -do-not-check-capabilities"
         };
 
-        for (int dataset_i = 0; dataset_i < p_datasets_mdu.length; dataset_i++) {
+        for (int dataset_i = 0; dataset_i < p_datasets_mdi.length; dataset_i++) {
 
-            RunSubjectIndependentClassification(p_datasets_mdu[dataset_i], args);
-
+            RunSubjectIndependentClassification(p_datasets_mdi[dataset_i], args);
+            System.out.println("====================== " + p_datasets_mdi[dataset_i] + " ============= ");
         }
 
     }
@@ -62,7 +61,8 @@ public class SubjectIndependentClassification {
             // classifier
 
 
-            RandomForest cls = new RandomForest();
+            SMO cls = new SMO();
+
 
             // other options
             int seed = 1;

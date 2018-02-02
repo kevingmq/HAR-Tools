@@ -24,6 +24,7 @@ public abstract class Method {
 
 		//Frequency
 		DCComponent,
+		SumOfFFTCoef,
 		SpectralEnergy,
 		InformationEntropy,
 
@@ -34,6 +35,7 @@ public abstract class Method {
 		PeakToPeakSignalValue,
 		PeakToPeakTime,
 		PeakToPeakSlope,
+
 
 
 	}

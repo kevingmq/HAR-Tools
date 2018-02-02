@@ -4,6 +4,7 @@ import features.methods.Method.MethodsName;
 import features.methods.frequencydomain.DCComponetMethod;
 import features.methods.frequencydomain.SpectralEntropyMethod;
 import features.methods.frequencydomain.NormalizedSpectralEnergyMethod;
+import features.methods.frequencydomain.SumOfFFTCoef;
 import features.methods.timedomain.*;
 
 public class FactoryMethod {
@@ -45,6 +46,8 @@ public class FactoryMethod {
 				//Frequency
 			case DCComponent:
 				return new DCComponetMethod();
+			case SumOfFFTCoef:
+				return new SumOfFFTCoef();
 			case SpectralEnergy:
 				return new NormalizedSpectralEnergyMethod();
 			case InformationEntropy:

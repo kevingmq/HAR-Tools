@@ -3,6 +3,10 @@ package classification;
 import metrics.ConfusionMatrix;
 import weka.classifiers.evaluation.Prediction;
 import weka.classifiers.trees.RandomForest;
+import weka.classifiers.trees.J48;
+import weka.classifiers.bayes.BayesNet;
+import weka.classifiers.lazy.IBk;
+import weka.classifiers.functions.SMO;
 import weka.classifiers.Evaluation;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
@@ -23,21 +27,18 @@ public class SubjectDependentClassification {
     public static void main(String args[]){
 
         String[] p_datasets_mdu = new String[]{
-                //"WISDM-MDU",
+                "WISDM-MDU-6C_FS1",
+                "WISDM-MDU-6C_FS2",
+                "WISDM-MDU-6C_FS3",
                 "UCI-MDU-OVER_FS1",
-               // "UniMiB-MDU",
+                "UCI-MDU-OVER_FS2",
+                "UCI-MDU-OVER_FS3",
+                "UniMiB-MDU_FS1",
+                "UniMiB-MDU_FS2",
+                "UniMiB-MDU_FS3",
         };
 
-        String[] p_segmentLenght = new String[]{
-             //   "200",
-                "128",
-             //   "151",
-        };
-        String[] p_sources = new String[]{
-             //   "3",
-                "3",
-             //   "3",
-        };
+
 
         args = new String[]{
                 "-s","1",
@@ -47,7 +48,8 @@ public class SubjectDependentClassification {
 
         for(int dataset_i = 0; dataset_i < p_datasets_mdu.length; dataset_i++) {
 
-            RunSubjectDependentClassification(p_datasets_mdu[dataset_i], p_segmentLenght[dataset_i], p_sources[dataset_i],args);
+            RunSubjectDependentClassification(p_datasets_mdu[dataset_i], args);
+            System.out.println("====================== " + p_datasets_mdu[dataset_i] + " ============= ");
 
         }
 
@@ -55,10 +57,9 @@ public class SubjectDependentClassification {
 
 
 
-    public static void RunSubjectDependentClassification(String dataset_name, String segmentLength, String n_sources, String[] args){
+    public static void RunSubjectDependentClassification(String dataset_name, String[] args){
 
-        int num_sources = Integer.valueOf(n_sources);
-        int segment_length = Integer.valueOf(segmentLength);
+
 
 
         //Main directory
@@ -70,7 +71,10 @@ public class SubjectDependentClassification {
             // classifier
 
 
-               RandomForest cls = new RandomForest();
+              // RandomForest cls = new RandomForest();
+            SMO cls = new SMO();
+
+
 
             // other options
                 int seed = 1;
