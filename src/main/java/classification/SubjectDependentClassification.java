@@ -27,14 +27,14 @@ public class SubjectDependentClassification {
     public static void main(String args[]){
 
         String[] p_datasets_mdu = new String[]{
-                "WISDM-MDU-6C_FS1",
-                "WISDM-MDU-6C_FS2",
+                //"WISDM-MDU-6C_FS1",
+                //"WISDM-MDU-6C_FS2",
                 "WISDM-MDU-6C_FS3",
-                "UCI-MDU-OVER_FS1",
-                "UCI-MDU-OVER_FS2",
+               // "UCI-MDU-OVER_FS1",
+               // "UCI-MDU-OVER_FS2",
                 "UCI-MDU-OVER_FS3",
-                "UniMiB-MDU_FS1",
-                "UniMiB-MDU_FS2",
+              //  "UniMiB-MDU_FS1",
+              //  "UniMiB-MDU_FS2",
                 "UniMiB-MDU_FS3",
         };
 
@@ -71,10 +71,14 @@ public class SubjectDependentClassification {
             // classifier
 
 
-              // RandomForest cls = new RandomForest();
+
+            //J48 cls = new J48();
+            //BayesNet cls = new BayesNet();
+            //IBk cls = new IBk();
+            //cls.setKNN(1);
             SMO cls = new SMO();
 
-
+            ConfusionMatrix cm = new ConfusionMatrix();
 
             // other options
                 int seed = 1;
@@ -119,22 +123,13 @@ public class SubjectDependentClassification {
                         //System.out.println(eval.weightedTruePositiveRate() + "," + eval.weightedPrecision() + "," + eval.weightedRecall() + "," + eval.unweightedMacroFmeasure());
                         ArrayList<Prediction> predictions = eval.predictions();
 
-                        ConfusionMatrix cm = new ConfusionMatrix();
+
 
                         for (Prediction p:predictions) {
                             cm.increaseValue(String.valueOf(p.actual()),String.valueOf(p.predicted()));
                         }
 
-                        String name_out = dataset_user_d.getName().substring(0, dataset_user_d.getName().lastIndexOf('.'));
-                        System.out.print( name_out + ',');
-                        System.out.print(String.valueOf(cm.getAccuracy()) + ",");
-                        System.out.print(String.valueOf(cm.getAvgPrecision()) + ",");
-                        System.out.print(String.valueOf(cm.getAvgRecall()) + ",");
-                        System.out.print(String.valueOf(cm.getMacroFMeasure()) + ",");
-                        System.out.print(String.valueOf(cm.getConfidence95Accuracy()) + ",");
-                        System.out.print(String.valueOf(cm.getConfidence95MacroFM())+ ",");
-                        System.out.print(String.valueOf(cm.getCohensKappa()));
-                        System.out.println();
+
 
                         //System.out.println(eval.toSummaryString());
                     }
@@ -147,6 +142,21 @@ public class SubjectDependentClassification {
 
 
             }
+            //String name_out = dataset_user_d.getName().substring(0, dataset_user_d.getName().lastIndexOf('.'));
+            //System.out.print( name_out + ',');
+            System.out.print(String.valueOf(cm.getAccuracy()) + ",");
+            System.out.print(String.valueOf(cm.getAvgPrecision()) + ",");
+            System.out.print(String.valueOf(cm.getAvgRecall()) + ",");
+            System.out.print(String.valueOf(cm.getMacroFMeasure()) + ",");
+            System.out.print(String.valueOf(cm.getConfidence95Accuracy()) + ",");
+            System.out.print(String.valueOf(cm.getConfidence95MacroFM())+ ",");
+            System.out.print(String.valueOf(cm.getCohensKappa()));
+            System.out.println();
+            System.out.println(cm.printClassDistributionGold());
+            System.out.println(cm.toString());
+
+            cm.toExportToFile(System.getProperty("user.home") + "/logs/confusionmatrix/cross-validation-subject/" ,dataset_name );
+
         }
     }
 }

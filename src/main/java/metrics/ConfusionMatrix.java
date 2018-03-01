@@ -16,6 +16,10 @@
 
 package metrics;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.*;
 
 /**
@@ -874,5 +878,47 @@ public class ConfusionMatrix
 
         return tableToString(table);
     }
+    public void toExportToFile(String directory_path, String filename_out)
+    {
+        try {
+            File directory_file = new File(directory_path);
+            File saveFile = new File(directory_path + "/" + filename_out + ".csv");
+            if (!directory_file.exists()) {
 
+                directory_file.mkdir();
+            }
+            if (!saveFile.exists()) {
+                saveFile.createNewFile();
+            }
+
+            FileWriter sFile = new FileWriter(saveFile, false);
+            PrintWriter pw = new PrintWriter(sFile);
+            StringBuilder sb = new StringBuilder();
+
+            sb.append("y_true,y_pred");
+            sb.append('\n');
+            pw.write(sb.toString());
+            sb.setLength(0);
+
+            for (String row : allGoldLabels) {
+
+                for (String col : allPredictedLabels) {
+                    Integer value = map.get(row).get(col);
+                    for(int i = 0; i < value; i++){
+                        sb.append(row);
+                        sb.append(',');
+                        sb.append(col);
+                        sb.append('\n');
+
+                    }
+                    pw.write(sb.toString());
+                    sb.setLength(0);
+                }
+            }
+            pw.close();
+        }
+        catch (IOException e) {
+
+        }
+    }
 }

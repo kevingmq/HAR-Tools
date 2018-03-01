@@ -23,14 +23,14 @@ public class SubjectIndependentClassification {
     public static void main(String args[]) {
 
         String[] p_datasets_mdi = new String[]{
-                "WISDM-MDI-X_FS1",
-                "WISDM-MDI-X_FS2",
+               // "WISDM-MDI-X_FS1",
+              //  "WISDM-MDI-X_FS2",
                 "WISDM-MDI-X_FS3",
-                "UCI-MDI-OVER_FS1",
-                "UCI-MDI-OVER_FS2",
+             //   "UCI-MDI-OVER_FS1",
+             //   "UCI-MDI-OVER_FS2",
                 "UCI-MDI-OVER_FS3",
-              "UniMiB-MDI_FS1",
-                "UniMiB-MDI_FS2",
+           //   "UniMiB-MDI_FS1",
+           //     "UniMiB-MDI_FS2",
                 "UniMiB-MDI_FS3",
         };
 
@@ -61,9 +61,13 @@ public class SubjectIndependentClassification {
             // classifier
 
 
+            //J48 cls = new J48();
+            //BayesNet cls = new BayesNet();
+            //IBk cls = new IBk();
+            //cls.setKNN(1);
             SMO cls = new SMO();
 
-
+            ConfusionMatrix cm = new ConfusionMatrix();
             // other options
             int seed = 1;
             int folds = 10;
@@ -94,22 +98,13 @@ public class SubjectIndependentClassification {
                     //System.out.println(eval.weightedTruePositiveRate() + "," + eval.weightedPrecision() + "," + eval.weightedRecall() + "," + eval.unweightedMacroFmeasure());
                     ArrayList<Prediction> predictions = eval.predictions();
 
-                    ConfusionMatrix cm = new ConfusionMatrix();
+
 
                     for (Prediction p : predictions) {
                         cm.increaseValue(String.valueOf(p.actual()), String.valueOf(p.predicted()));
                     }
 
-                    String name_out = dataset_user_d.getName();
-                    System.out.print(name_out + ',');
-                    System.out.print(String.valueOf(cm.getAccuracy()) + ",");
-                    System.out.print(String.valueOf(cm.getAvgPrecision()) + ",");
-                    System.out.print(String.valueOf(cm.getAvgRecall()) + ",");
-                    System.out.print(String.valueOf(cm.getMacroFMeasure()) + ",");
-                    System.out.print(String.valueOf(cm.getConfidence95Accuracy()) + ",");
-                    System.out.print(String.valueOf(cm.getConfidence95MacroFM()) + ",");
-                    System.out.print(String.valueOf(cm.getCohensKappa()));
-                    System.out.println();
+
 
                     //System.out.println(eval.toSummaryString());
 
@@ -119,6 +114,19 @@ public class SubjectIndependentClassification {
 
 
             }
+            System.out.print(String.valueOf(cm.getAccuracy()) + ",");
+            System.out.print(String.valueOf(cm.getAvgPrecision()) + ",");
+            System.out.print(String.valueOf(cm.getAvgRecall()) + ",");
+            System.out.print(String.valueOf(cm.getMacroFMeasure()) + ",");
+            System.out.print(String.valueOf(cm.getConfidence95Accuracy()) + ",");
+            System.out.print(String.valueOf(cm.getConfidence95MacroFM())+ ",");
+            System.out.print(String.valueOf(cm.getCohensKappa()));
+            System.out.println();
+            System.out.println(cm.printClassDistributionGold());
+            System.out.println(cm.toStringProbabilistic());
+            System.out.println(cm.toString());
+
+            cm.toExportToFile(System.getProperty("user.home") + "/logs/confusionmatrix/leave-subject-out/" ,dataset_name );
         }
     }
 }
