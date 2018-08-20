@@ -21,7 +21,7 @@ public abstract class Method {
 		STANDARD_DEVIATION,
 		VARIANCE,
 		ZeroCrossingsRateMean,
-
+		Range,
 		//Frequency
 		DCComponent,
 		SumOfFFTCoef,

@@ -34,5 +34,6 @@ public class FeatureSet {
 		FS1,
 		FS2,
 		FS3,
+		FS4,
 	}
 }

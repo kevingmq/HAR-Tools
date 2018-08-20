@@ -28,6 +28,8 @@ public class FactoryMethod {
 				return new MedianMethod();
 			case MIN:
 				return new MinMethod();
+			case Range:
+				return new RangeMethod();
 			case PearsonCorrelation:
 				return new PearsonCorrelationMethod();
 			case RootMeanSquare:
@@ -53,7 +55,7 @@ public class FactoryMethod {
 			case InformationEntropy:
 				return new SpectralEntropyMethod();
 
-		}
+		}//TO DO: rising exception here
 		return null;
 	}
 

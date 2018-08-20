@@ -25,13 +25,13 @@ public class SubjectIndependentClassification {
         String[] p_datasets_mdi = new String[]{
                // "WISDM-MDI-X_FS1",
               //  "WISDM-MDI-X_FS2",
-                "WISDM-MDI-X_FS3",
+                "WISDM-MDI-X_FS4",
              //   "UCI-MDI-OVER_FS1",
              //   "UCI-MDI-OVER_FS2",
-                "UCI-MDI-OVER_FS3",
+                "UCI-MDI-OVER_FS4",
            //   "UniMiB-MDI_FS1",
            //     "UniMiB-MDI_FS2",
-                "UniMiB-MDI_FS3",
+                "UniMiB-MDI_FS4",
         };
 
         args = new String[]{
@@ -66,6 +66,7 @@ public class SubjectIndependentClassification {
             //IBk cls = new IBk();
             //cls.setKNN(1);
             SMO cls = new SMO();
+            //RandomForest cls = new RandomForest();
 
             ConfusionMatrix cm = new ConfusionMatrix();
             // other options

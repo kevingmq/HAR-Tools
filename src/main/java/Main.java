@@ -22,6 +22,9 @@ public class Main {
                 "UCI-MDU-OVER",
                 "UniMiB-MDU",
         };
+        String[] p_datasets = new String[]{
+                "UCI",
+        };
         String[] p_segmentLenght = new String[]{
                 "200",
                 "128",
@@ -33,23 +36,102 @@ public class Main {
                 "3",
         };
 
-        for(int dataset_i = 0; dataset_i < p_datasets_mdu.length; dataset_i++) {
+        //for(int dataset_i = 0; dataset_i < p_datasets_mdu.length; dataset_i++) {
 
          // SubjectDependent(p_datasets_mdu[dataset_i], p_segmentLenght[dataset_i], p_sources[dataset_i]);
 
-        }
+        //}
 
-        for(int dataset_i = 0; dataset_i < p_datasets_mdi.length; dataset_i++) {
+        //for(int dataset_i = 0; dataset_i < p_datasets_mdi.length; dataset_i++) {
 
-           SubjectIndependent(p_datasets_mdi[dataset_i], p_segmentLenght[dataset_i], p_sources[dataset_i]);
+            //SubjectIndependent(p_datasets_mdi[dataset_i], p_segmentLenght[dataset_i], p_sources[dataset_i]);
 
-        }
+        //}
+        //for(int dataset_i = 0; dataset_i < p_datasets_mdi.length; dataset_i++) {
+
+            //split21e9(p_datasets[dataset_i], p_segmentLenght[dataset_i+1], p_sources[dataset_i]);
+
+        //}
+
+
+        timeProcessing();
+
 
 
     }
+    public static void timeProcessing(){
+
+        FeatureSet.SelectFeatures featureSet_p = FeatureSet.SelectFeatures.FS4;
+
+        File file = new File(System.getProperty("user.home") + "/datasets/21e9/UCI/TRAIN");
+
+        if(file.exists()){
+
+                int num_sources = 3;
+                int segment_length = 128;
+                long initial_time = 0;
+                long final_time = 0;
+
+                Dataset train = new Dataset("dataset1", num_sources, segment_length);
+                train.importDataFromTimeSeriesDataset(file);
+
+                FeatureSet fs = getFeatureSetByName(featureSet_p);
+
+                initial_time = System.currentTimeMillis();
+                VectorOfFeatures[] segmentsProcessed = FeaturesTransform.extractFeatures(train.getSegments(), fs);
+
+                System.out.println("\tTime Extract features : \t" + (System.currentTimeMillis() - initial_time) / 1000.0 + " s");
+
+
+        }
+
+    }
+
+    public static void split21e9(String dataset_name, String segmentLength, String n_sources){
+
+        FeatureSet.SelectFeatures featureSet_p = FeatureSet.SelectFeatures.FS4;
+
+        File d_file = new File(System.getProperty("user.home") + "/datasets/21e9/" + dataset_name);
+
+        if(d_file.exists() && d_file.isDirectory()){
+
+
+
+                File dataset_user_train = new File(d_file.getAbsolutePath() + "/TRAIN");
+                File dataset_user_test = new File(d_file.getAbsolutePath() + "/TEST");
+                String directory_path = System.getProperty("user.home") + "/datasets/transformed/21e9/" + dataset_name + "_" + featureSet_p.toString();
+                File dir_file = new File(directory_path);
+                dir_file.mkdir();
+                //directory_path += "/" + d_file.getName();
+
+                String output_filename = d_file.getName();
+
+                int num_sources = Integer.valueOf(n_sources);
+                int segment_length = Integer.valueOf(segmentLength);
+
+                Dataset train = new Dataset(dataset_name.toString() + "/" + d_file.getName(), num_sources, segment_length);
+                train.importDataFromTimeSeriesDataset(dataset_user_train);
+                FeatureSet fs1 = getFeatureSetByName(featureSet_p);
+                VectorOfFeatures[] segmentsProcessed = FeaturesTransform.extractFeatures(train.getSegments(), fs1);
+                DatasetVFeatures dVFeatures_train = new DatasetVFeatures(train.getName(), segmentsProcessed);
+
+                dVFeatures_train.writeARFF(directory_path, "TRAIN");
+
+                Dataset test = new Dataset(dataset_name.toString() + "/" + d_file.getName(), num_sources, segment_length);
+                test.importDataFromTimeSeriesDataset(dataset_user_test);
+                VectorOfFeatures[] segmentsProcessed_test = FeaturesTransform.extractFeatures(test.getSegments(), fs1);
+                DatasetVFeatures dVFeatures_test = new DatasetVFeatures(test.getName(), segmentsProcessed_test);
+
+
+                dVFeatures_test.writeARFF(directory_path, "TEST");
+
+        }
+
+    }
+
     public static void SubjectIndependent(String dataset_name, String segmentLength, String n_sources){
 
-        FeatureSet.SelectFeatures featureSet_p = FeatureSet.SelectFeatures.FS3;
+        FeatureSet.SelectFeatures featureSet_p = FeatureSet.SelectFeatures.FS4;
 
         File d_file = new File(System.getProperty("user.home") + "/datasets/leave-subject-out/" + dataset_name);
 
@@ -162,7 +244,33 @@ public class Main {
                         MethodsName.VARIANCE,
                         MethodsName.ZeroCrossingsRateMean,
                         MethodsName.RootMeanSquare,
+                        MethodsName.MAX,
+                        MethodsName.MIN,
 
+                        MethodsName.DCComponent,
+                        MethodsName.SumOfFFTCoef,
+                        MethodsName.SpectralEnergy,
+                        MethodsName.InformationEntropy,
+                };
+                break;
+            case FS4:
+                methods = new MethodsName[]{
+                        MethodsName.MEAN,
+                        MethodsName.STANDARD_DEVIATION,
+                        MethodsName.MEDIAN,
+                        MethodsName.VARIANCE,
+                        MethodsName.ZeroCrossingsRateMean,
+                        MethodsName.RootMeanSquare,
+                        MethodsName.MAX,
+                        MethodsName.MIN,
+                        MethodsName.Range,
+                        MethodsName.AvgMagnitudeXYZ,
+                        //MethodsName.Covariance,
+                        MethodsName.KURTOSIS,
+                        MethodsName.SKEWNESS,
+                        MethodsName.SignalMagnitudeArea,
+                        //MethodsName.PearsonCorrelation,
+                        MethodsName.RootMeanSquare, //Freq
                         MethodsName.DCComponent,
                         MethodsName.SumOfFFTCoef,
                         MethodsName.SpectralEnergy,
